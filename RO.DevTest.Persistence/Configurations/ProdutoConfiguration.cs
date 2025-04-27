@@ -8,6 +8,8 @@ namespace RO.DevTest.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Produto> builder)
         {
+            builder.ToTable("Produtos");
+
             builder.HasKey(p => p.Id);
 
             builder.Property(p => p.Nome)
@@ -24,10 +26,11 @@ namespace RO.DevTest.Persistence.Configurations
             builder.Property(p => p.QuantidadeEstoque)
                 .IsRequired();
 
-            builder.Property(p => p.Ativo)
-                .IsRequired();
+            builder.Property(p => p.Codigo)
+                .IsRequired()
+                .HasMaxLength(50);
 
-            builder.HasIndex(p => p.Nome)
+            builder.HasIndex(p => p.Codigo)
                 .IsUnique();
         }
     }

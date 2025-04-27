@@ -8,6 +8,8 @@ public class ItemVendaConfiguration : IEntityTypeConfiguration<ItemVenda>
 {
     public void Configure(EntityTypeBuilder<ItemVenda> builder)
     {
+        builder.ToTable("ItensVenda");
+
         builder.HasKey(i => i.Id);
 
         builder.Property(i => i.Quantidade)
@@ -15,11 +17,20 @@ public class ItemVendaConfiguration : IEntityTypeConfiguration<ItemVenda>
 
         builder.Property(i => i.PrecoUnitario)
             .IsRequired()
-            .HasPrecision(18, 2);
+            .HasPrecision(10, 2);
+
+        builder.Property(i => i.Subtotal)
+            .IsRequired()
+            .HasPrecision(10, 2);
 
         builder.HasOne(i => i.Produto)
             .WithMany()
             .HasForeignKey(i => i.ProdutoId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(i => i.Venda)
+            .WithMany(v => v.Itens)
+            .HasForeignKey(i => i.VendaId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
